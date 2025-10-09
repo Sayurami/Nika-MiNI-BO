@@ -8,7 +8,7 @@ function convertToBool(text, fault = 'true') {
 module.exports = {
     // ───── WhatsApp Bot Config ─────
     SESSION_ID: process.env.SESSION_ID === undefined 
-        ? '𝐍𝐈𝐊𝐀 𝐌𝐈𝐍𝐈 𝐌𝐃=LJQHELyB#upv4t-SQCUgeTBIi0h0hrwu87CN_CGaUdwG7SlNwBZ0' 
+        ? '𝐍𝐈𝐊𝐀 𝐌𝐈𝐍𝐈 𝐌𝐃=LRJXUQDI#tJVw2d11J9O4QQ-r6V-27TfbbCtlA4NO9fQKdoaJzrE' 
         : process.env.SESSION_ID,
 
     OWNER_NUMBER: process.env.OWNER_NUMBER === undefined 
