@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.7.18",
+    "baileys-x": "^1.2.0",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@distube/ytdl-core": "^4.16.12",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -33,5 +34,8 @@
     "node-fetch": "^2.6.7",
     "puppeteer": "^22.15.0",
     "telegram": "^2.22.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
