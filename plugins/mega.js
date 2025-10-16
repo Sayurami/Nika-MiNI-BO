@@ -15,8 +15,7 @@ cmd({
     if (!decryptionKey) return reply("🔑 *Missing decryption key*");
 
     const megaFile = File.fromURL(fileUrl + "#" + decryptionKey);
-
-    await megaFile.loadAttributes(); // ✅ Ensure file name is fetched
+    await megaFile.loadAttributes();
 
     megaFile.on("progress", (downloaded, total) => {
       const percent = ((downloaded / total) * 100).toFixed(2);
@@ -24,31 +23,26 @@ cmd({
     });
 
     const buffer = await megaFile.downloadBuffer();
-    const fileName = megaFile.name || "file.mp4"; // ✅ Now real name should work
-    const ext = path.extname(fileName).toLowerCase();
+    let fileName = megaFile.name || "video.mp4";
+
+    // 🧩 Fix .bin extension issue
+    if (path.extname(fileName).toLowerCase() === ".bin") {
+      fileName = fileName.replace(/\.bin$/i, ".mp4");
+    }
 
     const sizeInMB = buffer.length / 1024 / 1024;
-    if (sizeInMB > 500) {
-      return reply(`❌ File is too large (${sizeInMB.toFixed(5)}MB). WhatsApp max: 500MB.`);
+    if (sizeInMB > 2048) { // 🔼 Max size = 2GB
+      return reply(`❌ File is too large (${sizeInMB.toFixed(2)}MB). Max allowed: 2GB.`);
     }
 
-    const caption = `🎞️ *${fileName}*\n\n❖ Video Quality : 720p\n\n📥 Video එක Full Download කිරිමෙන් අනතුරුව බලන්න\n\n🚨 වැඩ නැති එකක් උනොත් මේ number එකට message එකක් දාන්න: 0743826406\n\n> *ᴜᴘʟᴏᴀᴅ ʙʏ NIKA MINI*`;
+    const caption = `🎞️ *${fileName}*\n\n❖ Video Quality : 720p\n\n📥 Video එක Download කරලා බලන්න\n\n> *ᴜᴘʟᴏᴀᴅ ʙʏ NIKA MINI*`;
 
-    if (ext === ".mp4") {
-      await conn.sendMessage(from, {
-        video: buffer,
-        mimetype: 'video/mp4',
-        fileName,
-        caption
-      }, { quoted: mek });
-    } else {
-      await conn.sendMessage(from, {
-        document: buffer,
-        mimetype: 'application/octet-stream',
-        fileName,
-        caption: `📦 *Downloaded from Mega.nz*\n📁 ${fileName}`
-      }, { quoted: mek });
-    }
+    await conn.sendMessage(from, {
+      video: buffer,
+      mimetype: 'video/mp4',
+      fileName,
+      caption
+    }, { quoted: mek });
 
   } catch (e) {
     console.error(e);
